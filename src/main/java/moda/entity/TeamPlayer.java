@@ -9,6 +9,7 @@ public class TeamPlayer {
    private Integer teamId;
    private Integer score;
    private Integer point;
+   private Double coef;
 
    public Integer getPlayerId() {
       return playerId;
@@ -40,6 +41,14 @@ public class TeamPlayer {
 
    public void setPoint(Integer point) {
       this.point = point;
+   }
+
+   public Double getCoef() {
+      return coef;
+   }
+
+   public void setCoef(Double coef) {
+      this.coef = coef;
    }
 
    public static TeamPlayer newInstance(Integer playerId, Integer teamId, Integer score, Integer point){

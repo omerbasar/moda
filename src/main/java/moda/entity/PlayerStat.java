@@ -9,7 +9,7 @@ public class PlayerStat {
    private Integer playerId;
    private Integer played;
    private Integer point;
-   private Integer score;
+   private Double score;
 
    public Integer getId() {
       return id;
@@ -43,11 +43,11 @@ public class PlayerStat {
       this.point = point;
    }
 
-   public Integer getScore() {
+   public Double getScore() {
       return score;
    }
 
-   public void setScore(Integer score) {
+   public void setScore(Double score) {
       this.score = score;
    }
 
@@ -67,11 +67,11 @@ public class PlayerStat {
       playerStat.setPlayerId(playerId);
       playerStat.setPlayed(0);
       playerStat.setPoint(0);
-      playerStat.setScore(0);
+      playerStat.setScore(0d);
       return playerStat;
    }
 
-   public static PlayerStat newInstance(Integer id, Integer playerId, Integer played, Integer score, Integer point){
+   public static PlayerStat newInstance(Integer id, Integer playerId, Integer played, Double score, Integer point){
       PlayerStat playerStat = new PlayerStat();
       playerStat.setId(id);
       playerStat.setPlayerId(playerId);

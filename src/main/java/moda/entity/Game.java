@@ -11,6 +11,8 @@ public class Game {
    private Date playedTime;
    private Integer homeTeamId;
    private Integer awayTeamId;
+   private Double homeTeamCoef;
+   private Double awayTeamCoef;
 
    public Integer getId() {
       return id;
@@ -44,12 +46,30 @@ public class Game {
       this.awayTeamId = awayTeamId;
    }
 
-   public static Game newInstance(Integer id, Date playedTime, Integer homeTeamId, Integer awayTeamId){
+   public Double getHomeTeamCoef() {
+      return homeTeamCoef;
+   }
+
+   public void setHomeTeamCoef(Double homeTeamCoef) {
+      this.homeTeamCoef = homeTeamCoef;
+   }
+
+   public Double getAwayTeamCoef() {
+      return awayTeamCoef;
+   }
+
+   public void setAwayTeamCoef(Double awayTeamCoef) {
+      this.awayTeamCoef = awayTeamCoef;
+   }
+
+   public static Game newInstance(Integer id, Date playedTime, Integer homeTeamId, Integer awayTeamId, Double homeTeamCoef, Double awayTeamCoef){
       Game game = new Game();
       game.setId(id);
       game.setPlayedTime(playedTime);
       game.setHomeTeamId(homeTeamId);
       game.setAwayTeamId(awayTeamId);
+      game.setHomeTeamCoef(homeTeamCoef);
+      game.setAwayTeamCoef(awayTeamCoef);
       return game;
    }
 }

@@ -38,8 +38,6 @@ public class Moda {
            createPlayerNameScoreMap("Erol", 2, "Habil", 1, "Emrah", 1, "Osman", 3));
    */
 
-      // Taylan'in oynadigi maclar
-      /*
       modaService.insertGame(simpleDataFormat.parse("04.10.2013"),
               createPlayerNameScoreMap("Erol", 2, "Osman", 7, "Taylan", 2, "Halil", 1),
               createPlayerNameScoreMap("Oktay", 2, "Burçin", 3, "Cihan", 0, "Caner", 4));
@@ -63,17 +61,10 @@ public class Moda {
       modaService.insertGame(simpleDataFormat.parse("10.12.2013"),
               createPlayerNameScoreMap("Bilal", 2, "Cihan", 5, "Askin", 3, "Emrah", 3),
               createPlayerNameScoreMap("Osman", 2, "Taylan", 1, "Caner", 3, "Oktay", 0));
-      */
 
-      // Bilal'in oynamadigi mac
-
-      /*
       modaService.insertGame(simpleDataFormat.parse("15.09.2013"),
               createPlayerNameScoreMap("Erol", 2, "Oktay", 3, "Burçin", 3, "Cihan", 3),
               createPlayerNameScoreMap("Osman", 3, "Emrah", 2, "Halil", 1, "Cem", 0));
-      */
-
-      // Taylan'in oynamadigi maclar
 
       modaService.insertGame(simpleDataFormat.parse("29.09.2013"),
               createPlayerNameScoreMap("Bilal", 1, "Erol", 3, "Halil", 4, "Oktay", 2),
@@ -110,6 +101,19 @@ public class Moda {
       modaService.insertGame(simpleDataFormat.parse("17.12.2013"),
               createPlayerNameScoreMap("Bilal", 0, "Erol", 4, "Oktay", 0, "Ömer", 5),
               createPlayerNameScoreMap("Osman", 1, "Kaan", 1, "Halil", 0, "Cihan", 1));
+
+      modaService.insertGame(simpleDataFormat.parse("21.12.2013"),
+              createPlayerNameScoreMap("Bilal", 1, "Oktay", 4, "Emrah", 1, "Erol", 1),
+              createPlayerNameScoreMap("Osman", 2, "Ömer", 1, "Halil", 0, "Caner", 4));
+
+      modaService.insertGame(simpleDataFormat.parse("24.12.2013"),
+              createPlayerNameScoreMap("Bilal", 4, "Erol", 1, "Oktay", 1, "Askin", 2),
+              createPlayerNameScoreMap("Osman", 2, "Ömer", 2, "Halil", 1, "Cihan", 0));
+
+      modaService.insertGame(simpleDataFormat.parse("28.12.2013"),
+              createPlayerNameScoreMap("Taylan", 4, "Erol", 1, "Burçin", 0, "Halil", 1),
+              createPlayerNameScoreMap("Bilal", 0, "Osman", 2, "Oktay", 0, "Emrah", 0));
+
    }
 
    private Map<String, Integer> createPlayerNameScoreMap(String name1, Integer score1,

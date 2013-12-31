@@ -5,6 +5,7 @@ import moda.dao.*;
 import moda.entity.*;
 import org.skife.jdbi.v2.DBI;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -80,6 +81,8 @@ public class ModaService {
    }
 
    public Game insertGame(Date playedTime, Map<String, Integer> homeTeamScoreMap, Map<String, Integer> awayTeamScoreMap){
+      Game game = new Game();
+
       Integer homeScore = getScore(homeTeamScoreMap);
       Integer awayScore = getScore(awayTeamScoreMap);
       Integer homePoint = (homeScore > awayScore) ? 3 : ((homeScore.equals(awayScore) ? 1 : 0));
@@ -88,10 +91,17 @@ public class ModaService {
       Team homeTeam = createTeam(homeScore, homePoint, homeTeamScoreMap);
       Team awayTeam = createTeam(awayScore, awayPoint, awayTeamScoreMap);
 
-      insertTeamPlayers(homeTeamScoreMap, homeTeam, homePoint);
-      insertTeamPlayers(awayTeamScoreMap, awayTeam, awayPoint);
+      Double homeRating = homeTeam.getRating().doubleValue();
+      Double awayRating = awayTeam.getRating().doubleValue();
 
-      Game game = new Game();
+      double minRating = Math.min(homeRating, awayRating);
+
+      game.setHomeTeamCoef(minRating / homeRating);
+      game.setAwayTeamCoef(minRating / awayRating);
+
+      insertTeamPlayers(homeTeamScoreMap, homeTeam, homePoint, game.getHomeTeamCoef());
+      insertTeamPlayers(awayTeamScoreMap, awayTeam, awayPoint, game.getAwayTeamCoef());
+
       game.setHomeTeamId(homeTeam.getId());
       game.setAwayTeamId(awayTeam.getId());
       game.setPlayedTime(playedTime);
@@ -101,7 +111,7 @@ public class ModaService {
       return null;
    }
 
-   private void insertTeamPlayers(Map<String, Integer> scoreMap, Team team, Integer point) {
+   private void insertTeamPlayers(Map<String, Integer> scoreMap, Team team, Integer point, Double coef) {
       for (String name : scoreMap.keySet()) {
          Player player = playerMapByName.get(name);
          TeamPlayer teamPlayer = new TeamPlayer();
@@ -109,10 +119,17 @@ public class ModaService {
          teamPlayer.setPlayerId(player.getId());
          teamPlayer.setScore(scoreMap.get(name));
          teamPlayer.setPoint(point);
+         teamPlayer.setCoef(coef);
          teamPlayerDAO.insert(teamPlayer);
       }
    }
 
+   /**
+    * Bir oyuncuya karsi ve o oyuncuyla beraber oyunlara gore 2 farkli istatistik
+    * tablosu olusturur.
+    *
+    * @param referencePlayerId reference player id
+    */
    public void calculateStatsAccordingTo(int referencePlayerId) {
       Map<Integer, PlayerStat> mapWithPlayer = new HashMap<Integer, PlayerStat>();
       Map<Integer, PlayerStat> mapWithoutPlayer = new HashMap<Integer, PlayerStat>();
@@ -125,14 +142,14 @@ public class ModaService {
             for (TeamPlayer teamPlayer : homeTeamPlayers) {
                Integer playerId = teamPlayer.getPlayerId();
                PlayerStat playerStat = mapWithPlayer.get(playerId);
-               playerStat = add(playerStat, PlayerStat.newInstance(1, playerId, 1, teamPlayer.getScore(), teamPlayer.getPoint()));
+               playerStat = add(playerStat, PlayerStat.newInstance(1, playerId, 1, teamPlayer.getScore().doubleValue(), teamPlayer.getPoint()));
                mapWithPlayer.put(playerId, playerStat);
             }
          }else{
             for (TeamPlayer teamPlayer : homeTeamPlayers) {
                Integer playerId = teamPlayer.getPlayerId();
                PlayerStat playerStat = mapWithoutPlayer.get(playerId);
-               playerStat = add(playerStat, PlayerStat.newInstance(2, playerId, 1, teamPlayer.getScore(), teamPlayer.getPoint()));
+               playerStat = add(playerStat, PlayerStat.newInstance(2, playerId, 1, teamPlayer.getScore().doubleValue(), teamPlayer.getPoint()));
                mapWithoutPlayer.put(playerId, playerStat);
             }
          }
@@ -143,14 +160,14 @@ public class ModaService {
             for (TeamPlayer teamPlayer : awayTeamPlayers) {
                Integer playerId = teamPlayer.getPlayerId();
                PlayerStat playerStat = mapWithPlayer.get(playerId);
-               playerStat = add(playerStat, PlayerStat.newInstance(1, playerId, 1, teamPlayer.getScore(), teamPlayer.getPoint()));
+               playerStat = add(playerStat, PlayerStat.newInstance(1, playerId, 1, teamPlayer.getScore().doubleValue(), teamPlayer.getPoint()));
                mapWithPlayer.put(playerId, playerStat);
             }
          }else{
             for (TeamPlayer teamPlayer : awayTeamPlayers) {
                Integer playerId = teamPlayer.getPlayerId();
                PlayerStat playerStat = mapWithoutPlayer.get(playerId);
-               playerStat = add(playerStat, PlayerStat.newInstance(2, playerId, 1, teamPlayer.getScore(), teamPlayer.getPoint()));
+               playerStat = add(playerStat, PlayerStat.newInstance(2, playerId, 1, teamPlayer.getScore().doubleValue(), teamPlayer.getPoint()));
                mapWithoutPlayer.put(playerId, playerStat);
             }
          }
@@ -176,7 +193,7 @@ public class ModaService {
       return false;
    }
 
-   public PlayerStat add(PlayerStat playerStat, PlayerStat added){
+   public PlayerStat add(@Nullable PlayerStat playerStat, PlayerStat added){
       if(playerStat == null){
          playerStat = added;
       }else{

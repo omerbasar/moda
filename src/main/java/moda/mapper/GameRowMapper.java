@@ -14,6 +14,6 @@ public class GameRowMapper implements ResultSetMapper<Game>
 {
    public Game map(int index, ResultSet r, StatementContext ctx) throws SQLException
    {
-      return Game.newInstance(r.getInt("id"), r.getDate("played_time"), r.getInt("home_team_id"), r.getInt("away_team_id"));
+      return Game.newInstance(r.getInt("id"), r.getDate("played_time"), r.getInt("home_team_id"), r.getInt("away_team_id"), r.getDouble("home_team_coef"), r.getDouble("away_team_coef"));
    }
 }

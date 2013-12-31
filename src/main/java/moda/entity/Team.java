@@ -41,4 +41,13 @@ public class Team {
    public void setPoint(Integer point) {
       this.point = point;
    }
+
+   public static Team newInstance(Integer id, Integer score, Integer rating, Integer point) {
+      Team team = new Team();
+      team.id = id;
+      team.score = score;
+      team.rating = rating;
+      team.point = point;
+      return team;
+   }
 }

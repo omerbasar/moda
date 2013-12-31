@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface TeamPlayerDAO {
 
-   @SqlUpdate("insert into team_player (player_id, team_id, score, point) values(:tp.playerId, :tp.teamId, :tp.score, :tp.point)")
+   @SqlUpdate("insert into team_player (player_id, team_id, score, point, coef) values(:tp.playerId, :tp.teamId, :tp.score, :tp.point, :tp.coef)")
    Integer insert(@BindBean("tp") TeamPlayer teamPlayer);
 
    @SqlUpdate("delete from team_player")

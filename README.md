@@ -9,3 +9,12 @@ FROM team_player
 INNER JOIN player ON(id = player_id)
 GROUP BY player_id
 ORDER BY total DESC;
+
+/* takim zorlugu da hesaba katiliyor. */
+
+SELECT name, count(*) oynadigi, ROUND(AVG(tp.score*10 + tp.point * 20) * coef,2) puan
+FROM team_player tp
+INNER JOIN team ON(tp.team_id = team.id)
+INNER JOIN player ON (tp.player_id = player.id)
+GROUP BY player_id
+ORDER BY puan DESC;
